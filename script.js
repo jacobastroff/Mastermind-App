@@ -1,12 +1,25 @@
 const codeGuesses = Array.from(
   document.querySelectorAll(".guess-and-color-selection")
 );
+const colors = [
+  "blue",
+  "grey",
+  "yellow",
+  "red",
+  "orange",
+  "green",
+  "white",
+  "pink",
+];
 const containerColors = document.querySelector(".container-colors");
-const pastGuesses = [];
-const errorContainer = document.querySelector(".error-container");
+let pastGuesses = [];
+const errorContainer = document.getElementById("error-container");
+const successContainer = document.getElementById("success-container");
 const submitBtn = document.querySelector(".submit-button");
+const resetBtn = document.querySelector(".reset");
 const pastGuessesContainer = document.querySelector(".past-guesses");
 let guessesLeft = 10;
+let playerWon = false;
 class Guess {
   guess;
   allColors;
@@ -70,21 +83,15 @@ class Guess {
     this.#parentElement.insertAdjacentHTML("afterbegin", html);
   }
 }
-const gameInit = function () {
-  const colors = [
-    "blue",
-    "grey",
-    "yellow",
-    "red",
-    "orange",
-    "green",
-    "white",
-    "pink",
-  ];
-  const code = [];
-  for (let i = 0; i < 4; i++) {
-    code.push(colors[Math.floor(Math.random() * colors.length)]);
+const initializeCode = function () {
+  const uniqueCode = new Set();
+  while (uniqueCode.size < 4) {
+    uniqueCode.add(colors[Math.floor(Math.random() * colors.length)]);
+    console.log(uniqueCode);
   }
+  return [...uniqueCode];
+};
+const gameInit = function () {
   codeGuesses.forEach(function (el, i) {
     el.insertAdjacentHTML(
       "afterbegin",
@@ -102,9 +109,9 @@ const gameInit = function () {
 </div>`
     );
   });
-  return code;
 };
-const code = gameInit();
+const code = initializeCode();
+gameInit();
 console.log(code);
 
 const guessInit = function () {
@@ -177,6 +184,14 @@ const checkGuess = function (guess, code) {
   let rightColorRightSpot = 0;
   let wrongColor = 0;
   try {
+    if (guessesLeft < 1)
+      throw new Error(
+        `You have no more guesses remaining! Click the "Start Over" button to try again!`
+      );
+    if (playerWon)
+      throw new Error(
+        'You have already guessed the code! Please click the "Start Over" button to play again!'
+      );
     if (guess.includes("_"))
       throw new Error("Error: Some guesses have not been assigned a color");
     if (
@@ -185,6 +200,8 @@ const checkGuess = function (guess, code) {
       )
     )
       throw new Error("Error : Sequence has already been guessed");
+    if (new Set(guess).size < 4)
+      throw new Error("Error: No duplicate colors allowed");
     guess.forEach(function (color, i) {
       if (code.includes(color)) {
         if (code[i] === color) {
@@ -208,24 +225,49 @@ const checkGuess = function (guess, code) {
       pastGuesses[pastGuesses.length - 1].renderGuess();
       guessesLeft--; //MOVE TO DIFFERENT FUNCTION AFTERWARDS
       console.log(pastGuesses, guessesLeft);
-
-      return false;
     } else {
       //END GAME - PROMPT USER TO CLICK A NEW BUTTON TO START OVER
-      return true;
+      console.log(successContainer);
+      successContainer.classList.remove("deleted");
+      successContainer.querySelector(".message-text").textContent =
+        'You guessed the code! Congratulations! If you want to play again, click the "Start Over" button!';
+      playerWon = true;
     }
   } catch (err) {
     console.error(err);
+    successContainer.classList.add("deleted");
     // document.querySelector('.header-mastermind').style.marginBotton = '12.8rem'
     errorContainer.classList.remove("deleted");
-    document.querySelector(".error-text").textContent = err.message;
+    errorContainer.querySelector(".message-text").textContent = err.message;
   }
 };
-
+const resetPage = function () {
+  pastGuessesContainer.innerHTML = "";
+  pastGuesses = [];
+  guess.fill("_");
+  document
+    .querySelectorAll(".color-guess")
+    .forEach((el) => (el.style.backgroundColor = "white"));
+  guessesLeft = 10;
+  errorContainer.classList.add("deleted");
+  successContainer.classList.add("deleted");
+  playerWon = false;
+  const uniqueCode = new Set();
+  while (uniqueCode.size < 4) {
+    uniqueCode.add(colors[Math.floor(Math.random() * colors.length)]);
+    console.log(uniqueCode);
+  }
+  code.forEach((_, i) => (code[i] = [...uniqueCode][i]));
+};
 const submitInit = function () {
   submitBtn.addEventListener("click", checkGuess.bind(null, guess, code)); //PUT INTO FUNCTION LATER
 };
+const resetInit = function () {
+  resetBtn.addEventListener("click", resetPage);
+};
 submitInit();
+resetInit();
+
 // guess goes here
 
 /*
