@@ -127,7 +127,6 @@ const initializeCode = function () {
   const uniqueCode = new Set();
   while (uniqueCode.size < 4) {
     uniqueCode.add(colors[Math.floor(Math.random() * colors.length)]);
-    console.log(uniqueCode);
   }
   return [...uniqueCode];
 };
@@ -152,7 +151,6 @@ const gameInit = function () {
 };
 const code = initializeCode();
 gameInit();
-console.log(code);
 
 const guessInit = function () {
   const guess = new Array(4);
@@ -173,12 +171,10 @@ const guessInit = function () {
       });
   });
   containerColors.addEventListener("click", function (e) {
-    console.log(e.target);
     if (e.target.closest(".color")) {
       const guessPosition = e.target.parentElement.dataset.guessNum;
       const color = e.target.dataset.color;
       guess[guessPosition - 1] = color;
-      console.log(guess);
       e.target.parentElement.parentElement.querySelector(
         ".color-guess"
       ).style.backgroundColor = color;
@@ -199,14 +195,10 @@ const guessInit = function () {
         (containerEl, curEl) => (curEl.dataset.id === id ? curEl : containerEl),
         ""
       );
-      console.log(container);
       const pastGuessedColors = container.querySelectorAll(".past-guess-color");
-      console.log(pastGuessedColors);
       pastGuessedColors.forEach(function (passedGuessedColorEl, i) {
-        console.log("Hello");
         const color = passedGuessedColorEl.dataset.color;
         guess[i] = color;
-        console.log(guess);
         // pastGuesses[id - 1].guess[id - 1] = color;
         document.querySelectorAll(".color-guess")[i].style.backgroundColor =
           color;
@@ -215,7 +207,6 @@ const guessInit = function () {
   });
   toggleSidebarBtn.addEventListener("click", function (e) {
     e.preventDefault();
-    console.log("Hello");
     sidebarRules.classList.toggle("hidden-sidebar");
     const status = sidebarRules.classList.contains("hidden-sidebar")
       ? "hidden"
@@ -279,17 +270,14 @@ const checkGuess = function (guess, code) {
       document
         .querySelectorAll(".color-guess")
         .forEach((el) => (el.style.backgroundColor = "white"));
-      console.log(pastGuesses, guessesLeft);
     } else {
       //END GAME - PROMPT USER TO CLICK A NEW BUTTON TO START OVER
-      console.log(successContainer);
       successContainer.classList.remove("deleted");
       successContainer.querySelector(".message-text").textContent =
         'You guessed the code! Congratulations! If you want to play again, click the "Start Over" button!';
       playerWon = true;
     }
   } catch (err) {
-    console.error(err);
     successContainer.classList.add("deleted");
     // document.querySelector('.header-mastermind').style.marginBotton = '12.8rem'
     errorContainer.classList.remove("deleted");
@@ -325,51 +313,3 @@ const resetInit = function () {
 };
 submitInit();
 resetInit();
-
-// guess goes here
-
-/*
-let gameOver = false;
-let playerWon = false;
-let playerLost = false;
-let guessesLeft = 10;
-const checkGuess = function (guess) {
-    let rightColorRightSpot = 0;
-    let rightColorWrongSpot = 0;
-    let wrongColor = 0;
-    guessColors = guess.split(', ')
-    guessColors.forEach(function (guessColor, i) {
-        if (code.includes(color) && code.findIndexOf(guessColor) === i) {
-            //Add class to the correct color button with the correct svg symbol
-            rightColorRightSpot++;
-
-        }
-        else if (code.includes(color)) {
-            //Add class to the correct color button with the correct svg symbol
-            rightColorWrongSpot++;
-        }
-        else {
-            wrongColorWrongSpot++;
-        }
-
-    })
-    if (rightColorRightSpot === 4) {
-        playerWon = true;
-        gameOver = true;
-    }
-    else {
-        if (guessesLeft > 0) guessesLeft--;
-        else {
-            playerLost = true;
-            gameOver = true;
-        }
-    }
-    if (gameOver) {
-        if (playerWon) {
-            //Put code here
-        }
-        if (playerLost) {//Put code here
-        }
-    }
-}
-*/
