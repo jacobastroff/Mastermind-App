@@ -15,7 +15,11 @@ const containerColors = document.querySelector(".container-colors");
 let pastGuesses = [];
 const errorContainer = document.getElementById("error-container");
 const successContainer = document.getElementById("success-container");
+const hintElementContainer = document.querySelector(".hint-information");
+const sidebarRules = document.querySelector(".rules");
 const submitBtn = document.querySelector(".submit-button");
+const toggleSidebarBtn = document.querySelector(".toggle-sidebar");
+
 const resetBtn = document.querySelector(".reset");
 const pastGuessesContainer = document.querySelector(".past-guesses");
 let guessesLeft = 10;
@@ -24,6 +28,7 @@ class Guess {
   guess;
   allColors;
   #parentElement = document.querySelector(".past-guesses");
+  #hintElementContainer = document.querySelector(".hint-information");
   #rightColorRightSpot;
   #rightColorWrongSpot;
   #wrongColor;
@@ -36,7 +41,7 @@ class Guess {
   }
   renderGuess() {
     //EDIT AFTERWARDS TO ADD ICONS
-    const html = `<div data-id = "${
+    const htmlGuessLog = `<div data-id = "${
       pastGuesses.indexOf(this) + 1
     }"class="past-guess past-guess-${
       (pastGuesses.indexOf(this) + 1) % 2 === 0 ? "even" : "odd"
@@ -80,7 +85,42 @@ class Guess {
 
 
 </div>`;
-    this.#parentElement.insertAdjacentHTML("afterbegin", html);
+    const htmlHintBox = `<ul class="clue right-color-right-spot">
+<div
+  class="hint-icon spot-icon right-color-right-spot-icon"
+></div>
+<p class="guess-infomation">
+  ${this.#rightColorRightSpot} color${
+      this.#rightColorRightSpot > 1 || this.#rightColorRightSpot === 0
+        ? "s are"
+        : " is"
+    } in the code, and in the right spot
+</p>
+</ul>
+<ul class="clue right-color-wrong-spot">
+<div
+  class="hint-icon spot-icon right-color-wrong-spot-icon"
+></div>
+<p class="guess-infomation">
+  ${this.#rightColorWrongSpot} color${
+      this.#rightColorWrongSpot > 1 || this.rightColorWrongSpot === 0
+        ? "s are"
+        : " is"
+    } in the code, but in the wrong spot
+</p>
+</ul>
+<ul class="clue wrong-color">
+<div class="hint-icon spot-icon wrong-color-icon"></div>
+<p class="guess-infomation">
+  ${this.#wrongColor} color${
+      this.#wrongColor > 1 || this.#wrongColor === 0 ? "s are" : " is"
+    } not in the code at all
+</p>
+</ul>`;
+    this.#parentElement.insertAdjacentHTML("afterbegin", htmlGuessLog);
+    this.#hintElementContainer.classList.remove("deleted");
+    this.#hintElementContainer.innerHTML = "";
+    this.#hintElementContainer.insertAdjacentHTML("afterbegin", htmlHintBox);
   }
 }
 const initializeCode = function () {
@@ -173,6 +213,17 @@ const guessInit = function () {
       });
     }
   });
+  toggleSidebarBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    console.log("Hello");
+    sidebarRules.classList.toggle("hidden-sidebar");
+    const status = sidebarRules.classList.contains("hidden-sidebar")
+      ? "hidden"
+      : "showing";
+    toggleSidebarBtn.textContent = `${
+      status === "hidden" ? "Show" : "Hide"
+    } Rules!`;
+  });
 
   return guess;
 };
@@ -242,6 +293,7 @@ const checkGuess = function (guess, code) {
     successContainer.classList.add("deleted");
     // document.querySelector('.header-mastermind').style.marginBotton = '12.8rem'
     errorContainer.classList.remove("deleted");
+    hintElementContainer.classList.add("deleted");
     errorContainer.querySelector(".message-text").textContent = err.message;
   }
 };
@@ -255,6 +307,8 @@ const resetPage = function () {
   guessesLeft = 10;
   errorContainer.classList.add("deleted");
   successContainer.classList.add("deleted");
+  hintElementContainer.classList.add("deleted");
+
   playerWon = false;
   const uniqueCode = new Set();
   while (uniqueCode.size < 4) {
