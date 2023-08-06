@@ -283,7 +283,7 @@ body {
   display: flex;
   justify-content: center;
   padding: 2rem;
-  transition: all 0.3s;
+  transition: all 0.5s;
 }
 .header-rules {
   text-align: center;
@@ -315,12 +315,11 @@ body {
 }
 .hidden-sidebar {
   transform: translateX(100%);
-  visibility: hidden;
+  opacity: 0;
 }
 .button-toggle-sidebar {
   display: flex;
   justify-content: center;
-  visibility: visible;
 }
 .toggle-sidebar {
   text-decoration: none;
