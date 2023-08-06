@@ -97,12 +97,18 @@ body {
   /* margin-top */
   padding: 1.6rem 2rem;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   /* display: inline; */
 
   /* display: inline; */
 }
 .error-box {
   background-color: red;
+}
+.error-black-box {
+  align-self: center;
 }
 .success-box {
   background-color: #07b407;

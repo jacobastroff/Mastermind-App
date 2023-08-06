@@ -228,7 +228,7 @@ const checkGuess = function (guess, code) {
   try {
     if (guessesLeft < 1)
       throw new Error(
-        `You have no more guesses remaining! Click the "Start Over" button to try again!`
+        `Error: No guesses remaining. To start over, click the "Start Over" button`
       );
     if (playerWon)
       throw new Error(
@@ -266,6 +266,11 @@ const checkGuess = function (guess, code) {
       );
       pastGuesses[pastGuesses.length - 1].renderGuess();
       guessesLeft--; //MOVE TO DIFFERENT FUNCTION AFTERWARDS
+      if (guessesLeft < 1) {
+        throw new Error(
+          `Sorry, you have run out of guesses! The correct guess was:`
+        );
+      }
       guess.fill("_");
       document
         .querySelectorAll(".color-guess")
@@ -283,6 +288,23 @@ const checkGuess = function (guess, code) {
     errorContainer.classList.remove("deleted");
     hintElementContainer.classList.add("deleted");
     errorContainer.querySelector(".message-text").textContent = err.message;
+    if (
+      err.message.startsWith("Sorry,") &&
+      !errorContainer.querySelector(".error-black-box")
+    ) {
+      document.querySelector(".message-box").insertAdjacentHTML(
+        "beforeend",
+        `<div class="black-box-code error-black-box">
+      <div class="past-guess-colors">
+          <div class="past-guess-color color-${code[0]}" data-color="${code[0]}" ></div>
+          <div class="past-guess-color color-${code[1]}" data-color="${code[1]}" ></div>
+          <div class="past-guess-color color-${code[2]}" data-color="${code[2]}" ></div>
+          <div class="past-guess-color color-${code[3]}" data-color="${code[3]}" ></div>
+      </div></div>`
+      );
+    } else {
+      document.querySelector(".error-black-box").remove();
+    }
   }
 };
 const resetPage = function () {
@@ -301,7 +323,6 @@ const resetPage = function () {
   const uniqueCode = new Set();
   while (uniqueCode.size < 4) {
     uniqueCode.add(colors[Math.floor(Math.random() * colors.length)]);
-    console.log(uniqueCode);
   }
   code.forEach((_, i) => (code[i] = [...uniqueCode][i]));
 };
