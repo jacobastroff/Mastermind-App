@@ -224,6 +224,10 @@ const checkGuess = function (guess, code) {
       );
       pastGuesses[pastGuesses.length - 1].renderGuess();
       guessesLeft--; //MOVE TO DIFFERENT FUNCTION AFTERWARDS
+      guess.fill("_");
+      document
+        .querySelectorAll(".color-guess")
+        .forEach((el) => (el.style.backgroundColor = "white"));
       console.log(pastGuesses, guessesLeft);
     } else {
       //END GAME - PROMPT USER TO CLICK A NEW BUTTON TO START OVER

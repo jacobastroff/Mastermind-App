@@ -20,9 +20,10 @@ body {
   grid-template-columns: 1fr 3fr 1fr;
   column-gap: 2rem;
 }
-
-.past-guesses {
+.sidebar {
   background-color: #b8b7b7;
+}
+.past-guesses {
   overflow: scroll;
 }
 
@@ -37,18 +38,11 @@ body {
 
 .past-guess:hover {
   cursor: pointer;
+  background-color: #fff;
 }
 
-.past-guess-odd:hover {
+.past-guess-odd {
   background-color: #e9e9e9;
-}
-
-.past-guess-even {
-  background-color: #e9e9e9;
-}
-
-.past-guess-even:hover {
-  background-color: #b8b7b7;
 }
 
 .black-box-code {
@@ -71,7 +65,10 @@ body {
 }
 
 .spot-icon {
+  width: 2rem;
+  height: 2rem;
   padding: 0.5rem;
+  text-align: center;
   color: white;
   border-radius: 50%;
 }
@@ -82,6 +79,9 @@ body {
 
 .right-color-wrong-spot-icon {
   background-color: #735100;
+}
+.wrong-color-icon {
+  background-color: red;
 }
 
 .message-container {
@@ -174,6 +174,7 @@ body {
   /* align-self: center; */
   border: none;
   transition: all 0.3s;
+  font-family: "Courier New", Courier, monospace;
 }
 .submit-button {
   background-color: #1165a2;
@@ -254,4 +255,37 @@ body {
 
 .color-orange {
   background-color: orange;
+}
+.rules {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+.header-rules {
+  text-align: center;
+  font-size: 3.6rem;
+  margin-bottom: 2.4rem;
+}
+.rule-text {
+  font-size: 1.1rem;
+}
+.clues {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  margin: 2.4rem 0;
+}
+.clue {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.clue-icon {
+  width: fit-content;
+  height: auto;
+}
+.rule-text {
+  font-size: 1.1rem;
 }
