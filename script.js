@@ -277,6 +277,7 @@ const checkGuess = function (guess, code) {
         .forEach((el) => (el.style.backgroundColor = "white"));
     } else {
       //END GAME - PROMPT USER TO CLICK A NEW BUTTON TO START OVER
+      //   successContainer.classList?.remove("deleted");
       successContainer.classList?.remove("deleted");
       successContainer.querySelector(".message-text").textContent =
         'You guessed the code! Congratulations! If you want to play again, click the "Start Over" button!';
