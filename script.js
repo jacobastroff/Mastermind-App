@@ -1,4 +1,3 @@
-import "core.js/stable";
 const codeGuesses = Array.from(
   document.querySelectorAll(".guess-and-color-selection")
 );
