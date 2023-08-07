@@ -85,41 +85,49 @@ class Guess {
 
 
 </div>`;
+
+    this.#parentElement.insertAdjacentHTML("afterbegin", htmlGuessLog);
+  }
+  renderHintBox() {
     const htmlHintBox = `<li class="clue right-color-right-spot">
-<div
-  class="hint-icon spot-icon right-color-right-spot-icon"
-></div>
-<p class="guess-infomation">
-  ${this.#rightColorRightSpot} color${
+    <div
+      class="hint-icon spot-icon right-color-right-spot-icon"
+    ></div>
+    <p class="guess-infomation">
+      ${this.#rightColorRightSpot} color${
       this.#rightColorRightSpot > 1 || this.#rightColorRightSpot === 0
         ? "s are"
         : " is"
     } in the code, and in the right spot
-</p>
-</li>
-<li class="clue right-color-wrong-spot">
-<div
-  class="hint-icon spot-icon right-color-wrong-spot-icon"
-></div>
-<p class="guess-infomation">
-  ${this.#rightColorWrongSpot} color${
+    </p>
+    </li>
+    <li class="clue right-color-wrong-spot">
+    <div
+      class="hint-icon spot-icon right-color-wrong-spot-icon"
+    ></div>
+    <p class="guess-infomation">
+      ${this.#rightColorWrongSpot} color${
       this.#rightColorWrongSpot > 1 || this.rightColorWrongSpot === 0
         ? "s are"
         : " is"
     } in the code, but in the wrong spot
-</p>
-</li>
-<li class="clue wrong-color">
-<div class="hint-icon spot-icon wrong-color-icon"></div>
-<p class="guess-infomation">
-  ${this.#wrongColor} color${
+    </p>
+    </li>
+    <li class="clue wrong-color">
+    <div class="hint-icon spot-icon wrong-color-icon"></div>
+    <p class="guess-infomation">
+      ${this.#wrongColor} color${
       this.#wrongColor > 1 || this.#wrongColor === 0 ? "s are" : " is"
     } not in the code at all
-</p>
-</li>
-
-</ul>`;
-    this.#parentElement.insertAdjacentHTML("afterbegin", htmlGuessLog);
+    </p>
+    </li>
+    <li class="guesses-remaining">
+    <p class="guess-information guesses-left">You have ${
+      guessesLeft - 1
+    } guess${guessesLeft - 1 > 1 ? "es" : ""} remaining</p>
+    </li>
+    
+    </ul>`;
     this.#hintElementContainer.classList.remove("deleted");
     this.#hintElementContainer.innerHTML = "";
     this.#hintElementContainer.insertAdjacentHTML("afterbegin", htmlHintBox);
@@ -221,7 +229,32 @@ const guessInit = function () {
   return guess;
 };
 const guess = guessInit();
+const renderCorrectGuess = function () {
+  const html = `<div data-id = "${
+    pastGuesses.length - 1
+  }"class="past-guess past-guess-correct">
+     
+      <div data-id = "${pastGuesses.length - 1}"class="black-box-code">
+          <div data-id = "${pastGuesses.length - 1}"class="past-guess-colors">
+              <div class="past-guess-color color-${code[0]}" data-id = "${
+    pastGuesses.length - 1
+  }"data-color = "${code[0]}"></div>
+              <div class="past-guess-color color-${code[1]}" data-id = "${
+    pastGuesses.length - 1
+  }"data-color = "${code[1]}"></div>
+              <div class="past-guess-color color-${code[2]}" data-id = "${
+    pastGuesses.length - 1
+  }"data-color = "${code[2]}"></div>
+              <div class="past-guess-color color-${code[3]}" data-id = "${
+    pastGuesses.length - 1
+  }"data-color = "${code[3]}"></div>
+          </div>
+      </div>
 
+
+</div>`;
+  pastGuessesContainer.insertAdjacentHTML("afterbegin", html);
+};
 //Function that will check the guess, some some actions but ultimately will will return true or false based on whether the user got the code right or not
 const checkGuess = function (guess, code) {
   let rightColorWrongSpot = 0;
@@ -267,6 +300,7 @@ const checkGuess = function (guess, code) {
         )
       );
       pastGuesses[pastGuesses.length - 1].renderGuess();
+      pastGuesses[pastGuesses.length - 1].renderHintBox();
       guessesLeft--; //MOVE TO DIFFERENT FUNCTION AFTERWARDS
       if (guessesLeft < 1) {
         throw new Error(
@@ -285,6 +319,7 @@ const checkGuess = function (guess, code) {
         'You guessed the code! Congratulations! If you want to play again, click the "Start Over" button!';
       playerWon = true;
       hintElementContainer.classList.add("deleted");
+      renderCorrectGuess();
     }
   } catch (err) {
     successContainer.classList.add("deleted");
