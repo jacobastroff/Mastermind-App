@@ -304,7 +304,7 @@ const checkGuess = function (guess, code) {
       </div></div>`
       );
     } else {
-      document.querySelector(".error-black-box").remove();
+      document.querySelector(".error-black-box")?.remove();
     }
   }
 };
