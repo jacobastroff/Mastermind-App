@@ -1,5 +1,27 @@
 {
   "dependencies": {
+    "core.js": "^0.4.2",
     "git": "^0.1.5"
-  }
+  },
+  "name": "mastermind-code",
+  "version": "1.0.0",
+  "devDependencies": {
+    "parcel": "^2.9.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobastroff/Mastermind-App.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacobastroff/Mastermind-App/issues"
+  },
+  "homepage": "https://github.com/jacobastroff/Mastermind-App#readme",
+  "description": ""
 }
