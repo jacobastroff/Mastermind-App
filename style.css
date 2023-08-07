@@ -317,6 +317,7 @@ body {
 }
 .guesses-left {
   text-align: center;
+  font-weight: bold;
 }
 .rule-text {
   font-size: 1.1rem;
