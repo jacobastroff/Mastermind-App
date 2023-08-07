@@ -209,6 +209,7 @@ body {
   gap: 2rem;
   padding: 2rem;
   transition: all 0.3s;
+  list-style: none;
 }
 .hint-information:hover {
   transform: translateY(-7.5%);

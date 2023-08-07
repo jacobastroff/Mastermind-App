@@ -85,7 +85,7 @@ class Guess {
 
 
 </div>`;
-    const htmlHintBox = `<ul class="clue right-color-right-spot">
+    const htmlHintBox = `<li class="clue right-color-right-spot">
 <div
   class="hint-icon spot-icon right-color-right-spot-icon"
 ></div>
@@ -96,8 +96,8 @@ class Guess {
         : " is"
     } in the code, and in the right spot
 </p>
-</ul>
-<ul class="clue right-color-wrong-spot">
+</li>
+<li class="clue right-color-wrong-spot">
 <div
   class="hint-icon spot-icon right-color-wrong-spot-icon"
 ></div>
@@ -108,14 +108,16 @@ class Guess {
         : " is"
     } in the code, but in the wrong spot
 </p>
-</ul>
-<ul class="clue wrong-color">
+</li>
+<li class="clue wrong-color">
 <div class="hint-icon spot-icon wrong-color-icon"></div>
 <p class="guess-infomation">
   ${this.#wrongColor} color${
       this.#wrongColor > 1 || this.#wrongColor === 0 ? "s are" : " is"
     } not in the code at all
 </p>
+</li>
+
 </ul>`;
     this.#parentElement.insertAdjacentHTML("afterbegin", htmlGuessLog);
     this.#hintElementContainer.classList.remove("deleted");
