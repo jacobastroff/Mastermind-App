@@ -1,6 +1,8 @@
+//Variable initialization - DOM elements
 const codeGuesses = Array.from(
   document.querySelectorAll(".guess-and-color-selection")
 );
+//Array containing all Mastermind colors
 const colors = [
   "blue",
   "grey",
@@ -19,12 +21,14 @@ const hintElementContainer = document.querySelector(".hint-information");
 const sidebarRules = document.querySelector(".rules");
 const submitBtn = document.querySelector(".submit-button");
 const toggleSidebarBtn = document.querySelector(".toggle-sidebar");
-
 const resetBtn = document.querySelector(".reset");
 const pastGuessesContainer = document.querySelector(".past-guesses");
+//Flags
 let guessesLeft = 10;
 let playerWon = false;
+//Guess object blueprint
 class Guess {
+  //Variable init
   guess;
   allColors;
   #parentElement = document.querySelector(".past-guesses");
@@ -32,6 +36,7 @@ class Guess {
   #rightColorRightSpot;
   #rightColorWrongSpot;
   #wrongColor;
+  //Function that runs for every instance of Guess blueprint
   constructor(guess, rightColorRightSpot, rightColorWrongSpot, wrongColor) {
     this.guess = [...guess];
     this.#rightColorRightSpot = rightColorRightSpot;
@@ -39,8 +44,9 @@ class Guess {
     this.#wrongColor = wrongColor;
     this.allColors = this.guess.join(",");
   }
+  //Function to render the guess on the guess log sidebar
   renderGuess() {
-    //EDIT AFTERWARDS TO ADD ICONS
+    //HTML to be rendered is saved into variable
     const htmlGuessLog = `<div data-id = "${
       pastGuesses.indexOf(this) + 1
     }"class="past-guess past-guess-${
@@ -85,10 +91,12 @@ class Guess {
 
 
 </div>`;
-
+    //Add the HTML to the sidebar
     this.#parentElement.insertAdjacentHTML("afterbegin", htmlGuessLog);
   }
+  //Function to render the hint box under the buttons
   renderHintBox() {
+    //HTML to be rendered is saved into a variable
     const htmlHintBox = `<li class="clue right-color-right-spot">
     <div
       class="hint-icon spot-icon right-color-right-spot-icon"
@@ -128,19 +136,25 @@ class Guess {
     </li>
     
     </ul>`;
+    //Hint box is rendered
     this.#hintElementContainer.classList.remove("deleted");
+    //Delete the previous hint box and add the new one
     this.#hintElementContainer.innerHTML = "";
     this.#hintElementContainer.insertAdjacentHTML("afterbegin", htmlHintBox);
   }
 }
+//Function to initialize and return the code to be guesses
 const initializeCode = function () {
+  //Make sure all values in the code are unique and random
   const uniqueCode = new Set();
   while (uniqueCode.size < 4) {
     uniqueCode.add(colors[Math.floor(Math.random() * colors.length)]);
   }
   return [...uniqueCode];
 };
+//Function to initialize the game itself
 const gameInit = function () {
+  //Add custom color selector to each guess circle
   codeGuesses.forEach(function (el, i) {
     el.insertAdjacentHTML(
       "afterbegin",
@@ -159,9 +173,10 @@ const gameInit = function () {
     );
   });
 };
+//Create a code
 const code = initializeCode();
 gameInit();
-
+//Initialize the color selector and submit button and return the guess that the submit button catches
 const guessInit = function () {
   const guess = new Array(4);
   guess.fill("_");
@@ -228,7 +243,9 @@ const guessInit = function () {
 
   return guess;
 };
+//create a new guess
 const guess = guessInit();
+//IF the code is broken, the correct guess is rendered on the sidebar with different styling
 const renderCorrectGuess = function () {
   const html = `<div data-id = "${
     pastGuesses.length - 1
@@ -312,8 +329,6 @@ const checkGuess = function (guess, code) {
         .querySelectorAll(".color-guess")
         .forEach((el) => (el.style.backgroundColor = "white"));
     } else {
-      //END GAME - PROMPT USER TO CLICK A NEW BUTTON TO START OVER
-      //   successContainer.classList?.remove("deleted");
       successContainer.classList.remove("deleted");
       successContainer.querySelector(".message-text").textContent =
         'You guessed the code! Congratulations! If you want to play again, click the "Start Over" button!';
@@ -346,6 +361,7 @@ const checkGuess = function (guess, code) {
     }
   }
 };
+//Function to reset the page and start a new game with a new code
 const resetPage = function () {
   pastGuessesContainer.innerHTML = "";
   pastGuesses = [];
@@ -371,5 +387,6 @@ const submitInit = function () {
 const resetInit = function () {
   resetBtn.addEventListener("click", resetPage);
 };
+//Call the functions
 submitInit();
 resetInit();
