@@ -29,8 +29,8 @@ let playerWon = false;
 //Guess object blueprint
 class Guess {
   //Variable init
-  guess;
-  allColors;
+  // guess;
+  // allColors;
   #parentElement = document.querySelector(".past-guesses");
   #hintElementContainer = document.querySelector(".hint-information");
   #rightColorRightSpot;
